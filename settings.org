@@ -1,0 +1,296 @@
+
+
+
+#+TITLE: My Emacs settings
+#+AUTHOR: Abhilash Babu
+
+
+* Global settings 
+#+BEGIN_SRC emacs-lisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(setq frame-title-format "emacs")
+(global-hl-line-mode t)
+(display-time-mode 1)
+(column-number-mode 1)
+(setq initial-scratch-message nil)
+(setq inhibit-startup-message t)
+#+END_SRC
+
+* Load the theme
+#+BEGIN_SRC emacs-lisp
+  ;; ;; Cycle through this set of themes
+  ;; (setq my-themes '(solarized-light solarized-dark zenburn railscast leuven monokai))
+
+  ;; (setq my-cur-theme nil)
+  ;; (defun cycle-my-theme ()
+  ;;   "Cycle through a list of themes, my-themes"
+  ;;   (interactive)
+  ;;   (when my-cur-theme
+  ;;     (disable-theme my-cur-theme)
+  ;;     (setq my-themes (append my-themes (list my-cur-theme))))
+  ;;   (setq my-cur-theme (pop my-themes))
+  ;;   (load-theme my-cur-theme t))
+
+  ;; ;; Switch to the first theme in the list above
+  ;; (cycle-my-theme)
+
+  ;; ;; Bind this to C-t
+  ;; (global-set-key (kbd "C-t") 'cycle-my-theme)
+#+END_SRC
+
+* Buffers
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (autoload 'ibuffer "ibuffer" "List buffers." t)
+#+END_SRC
+
+* Windows
+#+BEGIN_SRC emacs-lisp
+(winner-mode t)
+(windmove-default-keybindings)
+#+END_SRC
+
+* My register mappings
+#+BEGIN_SRC emacs-lisp
+(set-register ?e (cons 'file "~/.emacs.d/init.el"))
+(set-register ?n (cons 'file "D:/Notes/notes.org"))
+#+END_SRC
+
+* Project Management.
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (projectile-global-mode)
+    (setq projectile-completion-system 'ivy))
+
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-on))
+#+END_SRC
+* Autocomplete
+Autocomplete using the auto-complete package.
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-complete
+    :ensure t
+      :init
+      (progn
+	(ac-config-default)
+	(global-auto-complete-mode t)))
+#+END_SRC
+
+* Avy
+#+BEGIN_SRC emacs-lisp
+    (use-package avy
+      :ensure t
+      :bind (("M-s" . avy-goto-word-1)))
+#+END_SRC
+
+* Powerline
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+    :ensure t)
+  (require 'powerline)
+  (powerline-default-theme)
+#+END_SRC
+* Interactive search 
+There is this built in version of C-s for searching interactively. 
+But the package swiper is much better than the built in one. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq enable-recursive-minibuffers t)
+      (global-set-key "\C-s" 'swiper)
+      (global-set-key (kbd "C-c C-r") 'ivy-resume)
+      (global-set-key (kbd "<f6>") 'ivy-resume)
+      (global-set-key (kbd "M-x") 'counsel-M-x)
+      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+      (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+      (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+      (global-set-key (kbd "<f1> l") 'counsel-find-library)
+      (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+      (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+      (global-set-key (kbd "C-c g") 'counsel-git)
+      (global-set-key (kbd "C-c j") 'counsel-git-grep)
+      (global-set-key (kbd "C-c k") 'counsel-ag)
+      (global-set-key (kbd "C-x l") 'counsel-locate)
+      (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+      (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+      ))
+#+END_SRC
+
+* Cycle through themes
+#+BEGIN_SRC emacs-lisp
+  (use-package cycle-themes
+    :ensure t
+    :init (setq cycle-themes-list
+		'(leuven monokai zenburn solarized-dark))
+    :config (cycle-themes-mode))
+#+END_SRC
+
+* Smart scan
+#+BEGIN_SRC emacs-lisp
+  (use-package smartscan
+    :ensure t
+    :config (global-smartscan-mode t))
+#+END_SRC
+
+* Programming
+** General
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :init
+    (yas-global-mode 1))
+
+
+  ;; To show indent-guide
+  (use-package indent-guide
+    :ensure t)
+  (indent-guide-global-mode)
+#+END_SRC
+
+Smart parens will add bracket pairs.
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :ensure t)
+  (require 'smartparens-config)
+  (setq sp-autoescape-string-quote nil)
+  (--each '(css-mode-hook
+	    restclient-mode-hook
+	    js-mode-hook
+	    java-mode
+	    ruby-mode
+	    markdown-mode
+	    groovy-mode
+	    scala-mode)
+    (add-hook it 'turn-on-smartparens-mode))
+#+END_SRC
+
+Whitespace
+#+BEGIN_SRC emacs-lisp
+  (use-package whitespace
+    :defer 2
+    :config
+    (progn
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
+      (setq-default show-trailing-whitespace t)
+      (setq whitespace-style '(face empty tabs lines-tail trailing))
+      (global-whitespace-mode t)))
+#+END_SRC
+
+** Ruby
+#+BEGIN_SRC emacs-lisp
+  (use-package inf-ruby
+    :ensure t
+    :config (global-set-key (kbd "C-c r r") 'inf-ruby))
+
+  (use-package flymake-ruby
+    :ensure t)
+  (require 'flymake-ruby)
+  (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+#+END_SRC
+** Python
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode t))
+
+  (use-package jedi
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  (use-package py-autopep8
+    :ensure t
+    :init  
+    (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+#+END_SRC
+* Recent files
+#+BEGIN_SRC emacs-lisp
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 25)
+  (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+#+END_SRC
+* Wind move and Frame move
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+#+END_SRC
+* Treemacs
+If the evil mode is installed then there are some additional settings needs to be done.
+Refer the github page of the package.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package treemacs
+    :ensure t
+    :defer t
+    :config
+    (progn
+      (setq treemacs-follow-after-init          t
+	    treemacs-width                      35
+	    treemacs-indentation                2
+	    treemacs-git-integration            t
+	    treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+	    treemacs-silent-refresh             nil
+	    treemacs-change-root-without-asking nil
+	    treemacs-sorting                    'alphabetic-desc
+	    treemacs-show-hidden-files          t
+	    treemacs-never-persist              nil
+	    treemacs-is-never-other-window      nil
+	    treemacs-goto-tag-strategy          'refetch-index)
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t))
+    :bind
+    (:map global-map
+	  ([f8]         . treemacs-toggle)
+	  ("M-0"        . treemacs-select-window)
+	  ("C-c 1"      . treemacs-delete-other-windows)))
+#+END_SRC
+
+* Move text. 
+Move the current line or region up or down using the M-Up and M-Down keys.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package move-text
+    :ensure t
+    :init
+    (move-text-default-bindings))
+#+END_SRC
+
+* Goto Last change
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-chng
+    :ensure t
+    :config
+    (global-set-key [(control ?.)] 'goto-last-change)
+    (global-set-key [(contorl ?,)] 'goto-last-change-reverse))
+#+END_SRC
+
+* smex
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t)
+  (require 'smex)
+  (smex-initialize)
+#+END_SRC
+* Smart Forward
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-forward
+    :ensure t)
+  (require 'smart-forward)
+  (global-set-key (kbd "M-<up>") 'smart-up)
+  (global-set-key (kbd "M-<down>") 'smart-down)
+  (global-set-key (kbd "M-<left>") 'smart-backward)
+  (global-set-key (kbd "M-<right>") 'smart-forward)
+#+END_SRC
