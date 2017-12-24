@@ -33,7 +33,11 @@
   :config (require 'dired+)
   )
 
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
 
+(require 'seeing-is-believing)
+(add-hook 'ruby-mode-hook 'seeing-is-believing)
 
 (setq org-src-tab-acts-natively t)
 (custom-set-variables
@@ -43,12 +47,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
- '(indent-guide-global-mode t)
+    ("7bc31a546e510e6bde482ebca992e293a54cb075a0cbfb384bf2bf5357d4dee3" default)))
  '(package-selected-packages
    (quote
-    (goto-chng ac-emmet goto-chg indent-guide request-deferred smartparens highlight-indentation move-text zenburn-theme yasnippet use-package treemacs solarized-theme smartscan smart-mode-line-powerline-theme pc-bufsw monokai-theme magit-popup leuven-theme jedi inf-ruby ido-vertical-mode helm git-commit flymake-ruby flycheck emmet-mode eclipse-theme dired+ darcula-theme cycle-themes counsel-projectile)))
- '(tramp-syntax (quote default) nil (tramp)))
+    (mode-icons zenburn-theme yasnippet yard-mode ws-butler web-mode use-package treemacs solarized-theme smex smartscan smartparens smart-mode-line-powerline-theme smart-forward skewer-mode seeing-is-believing request-deferred py-autopep8 pc-bufsw move-text monokai-theme magit-popup leuven-theme jedi inf-ruby indent-guide impatient-mode ido-vertical-mode highlight-indentation helm-swoop goto-chg git-commit flymake-ruby flycheck eclipse-theme dired+ diminish darcula-theme cycle-themes counsel-projectile ac-emmet))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

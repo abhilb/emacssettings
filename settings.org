@@ -5,7 +5,7 @@
 #+AUTHOR: Abhilash Babu
 
 
-* Global settings 
+* Global settings
 #+BEGIN_SRC emacs-lisp
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -67,9 +67,7 @@
     (setq projectile-completion-system 'ivy))
 
   (use-package counsel-projectile
-    :ensure t
-    :config
-    (counsel-projectile-on))
+    :ensure t)
 #+END_SRC
 * Autocomplete
 Autocomplete using the auto-complete package.
@@ -96,9 +94,9 @@ Autocomplete using the auto-complete package.
   (require 'powerline)
   (powerline-default-theme)
 #+END_SRC
-* Interactive search 
-There is this built in version of C-s for searching interactively. 
-But the package swiper is much better than the built in one. 
+* Interactive search
+There is this built in version of C-s for searching interactively.
+But the package swiper is much better than the built in one.
 
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
@@ -213,7 +211,7 @@ Whitespace
 
   (use-package py-autopep8
     :ensure t
-    :init  
+    :init
     (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 #+END_SRC
 * Recent files
@@ -258,7 +256,7 @@ Refer the github page of the package.
 	  ("C-c 1"      . treemacs-delete-other-windows)))
 #+END_SRC
 
-* Move text. 
+* Move text.
 Move the current line or region up or down using the M-Up and M-Down keys.
 
 #+BEGIN_SRC emacs-lisp
@@ -266,15 +264,6 @@ Move the current line or region up or down using the M-Up and M-Down keys.
     :ensure t
     :init
     (move-text-default-bindings))
-#+END_SRC
-
-* Goto Last change
-#+BEGIN_SRC emacs-lisp
-  (use-package goto-chng
-    :ensure t
-    :config
-    (global-set-key [(control ?.)] 'goto-last-change)
-    (global-set-key [(contorl ?,)] 'goto-last-change-reverse))
 #+END_SRC
 
 * smex
@@ -293,4 +282,22 @@ Move the current line or region up or down using the M-Up and M-Down keys.
   (global-set-key (kbd "M-<down>") 'smart-down)
   (global-set-key (kbd "M-<left>") 'smart-backward)
   (global-set-key (kbd "M-<right>") 'smart-forward)
+#+END_SRC
+* Impatient mode
+#+BEGIN_SRC emacs-lisp
+  (use-package impatient-mode
+    :defer t
+    :config
+    (defun imp-markdown-filter (in)
+      (let ((out (current-buffer)))
+	(with-current-buffer in
+	  (markdown out))))
+    (push (cons 'markdown-mode #'imp-markdown-filter)
+	  imp-default-user-filters))
+#+END_SRC
+* Mode icons
+#+BEGIN_SRC emacs-lisp
+  (use-package mode-icons
+    :ensure t
+    :config (mode-icons-mode))
 #+END_SRC
