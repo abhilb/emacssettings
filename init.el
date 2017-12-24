@@ -1,10 +1,7 @@
-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 (when (not package-archive-contents) (package-refresh-contents))
-
-(add-to-list 'load-path "D:/Abhilash/.emacs.d/emacs-async")
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -21,11 +18,6 @@
 
 (setq org-src-fontify-natively t)
 
-
-(use-package pc-bufsw
-  :ensure t)
-(require 'pc-bufsw)
-(pc-bufsw-default-keybindings)
 
 
 (use-package dired+
@@ -50,7 +42,7 @@
     ("7bc31a546e510e6bde482ebca992e293a54cb075a0cbfb384bf2bf5357d4dee3" default)))
  '(package-selected-packages
    (quote
-    (mode-icons zenburn-theme yasnippet yard-mode ws-butler web-mode use-package treemacs solarized-theme smex smartscan smartparens smart-mode-line-powerline-theme smart-forward skewer-mode seeing-is-believing request-deferred py-autopep8 pc-bufsw move-text monokai-theme magit-popup leuven-theme jedi inf-ruby indent-guide impatient-mode ido-vertical-mode highlight-indentation helm-swoop goto-chg git-commit flymake-ruby flycheck eclipse-theme dired+ diminish darcula-theme cycle-themes counsel-projectile ac-emmet))))
+    (icicles mode-icons zenburn-theme yasnippet yard-mode ws-butler web-mode use-package treemacs solarized-theme smex smartscan smartparens smart-mode-line-powerline-theme smart-forward skewer-mode seeing-is-believing request-deferred py-autopep8 pc-bufsw move-text monokai-theme magit-popup leuven-theme jedi inf-ruby indent-guide impatient-mode ido-vertical-mode highlight-indentation helm-swoop goto-chg git-commit flymake-ruby flycheck eclipse-theme dired+ diminish darcula-theme cycle-themes counsel-projectile ac-emmet))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

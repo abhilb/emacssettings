@@ -1,11 +1,8 @@
-
-
-
 #+TITLE: My Emacs settings
 #+AUTHOR: Abhilash Babu
 
 
-* Global settings
+* Appearance
 #+BEGIN_SRC emacs-lisp
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -18,7 +15,14 @@
 (setq inhibit-startup-message t)
 #+END_SRC
 
-* Load the theme
+** Mode icons
+#+BEGIN_SRC emacs-lisp
+  (use-package mode-icons
+    :ensure t
+    :config (mode-icons-mode))
+#+END_SRC
+
+** Theme
 #+BEGIN_SRC emacs-lisp
   ;; ;; Cycle through this set of themes
   ;; (setq my-themes '(solarized-light solarized-dark zenburn railscast leuven monokai))
@@ -40,11 +44,15 @@
   ;; (global-set-key (kbd "C-t") 'cycle-my-theme)
 #+END_SRC
 
-* Buffers
+
+** Power line
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (autoload 'ibuffer "ibuffer" "List buffers." t)
+  (use-package powerline
+    :ensure t)
+  (require 'powerline)
+  (powerline-default-theme)
 #+END_SRC
+
 
 * Windows
 #+BEGIN_SRC emacs-lisp
@@ -69,7 +77,8 @@
   (use-package counsel-projectile
     :ensure t)
 #+END_SRC
-* Autocomplete
+
+* Completion
 Autocomplete using the auto-complete package.
 #+BEGIN_SRC emacs-lisp
   (use-package auto-complete
@@ -80,6 +89,53 @@ Autocomplete using the auto-complete package.
 	(global-auto-complete-mode t)))
 #+END_SRC
 
+** Tab completion in minibuffer
+#+BEGIN_SRC emacs-lisp
+  (use-package icicles
+    :ensure t
+    :config
+    (require 'icicles)
+    (icy-mode 1))
+#+END_SRC
+
+* Navigation
+** Buffer navigation
+Use C-Tab and C-S-Tab to navigate between buffers.
+#+BEGIN_SRC emacs-lisp
+  (use-package pc-bufsw
+    :ensure t)
+  (require 'pc-bufsw)
+  (pc-bufsw-default-keybindings)
+  (global-set-key [f12] 'pc-bufsw-mru)
+  (global-set-key [f11] 'pc-bufsw-lru)
+#+END_SRC
+
+
+** Move text.
+Move the current line or region up or down using the M-Up and M-Down keys.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package move-text
+    :ensure t
+    :init
+    (move-text-default-bindings))
+#+END_SRC
+
+
+** Recent files
+#+BEGIN_SRC emacs-lisp
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 25)
+  (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+#+END_SRC
+
+** List Buffers
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (autoload 'ibuffer "ibuffer" "List buffers." t)
+#+END_SRC
+
+
 * Avy
 #+BEGIN_SRC emacs-lisp
     (use-package avy
@@ -87,13 +143,6 @@ Autocomplete using the auto-complete package.
       :bind (("M-s" . avy-goto-word-1)))
 #+END_SRC
 
-* Powerline
-#+BEGIN_SRC emacs-lisp
-  (use-package powerline
-    :ensure t)
-  (require 'powerline)
-  (powerline-default-theme)
-#+END_SRC
 * Interactive search
 There is this built in version of C-s for searching interactively.
 But the package swiper is much better than the built in one.
@@ -214,17 +263,27 @@ Whitespace
     :init
     (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 #+END_SRC
-* Recent files
+** Web development
+*** Impatient mode
 #+BEGIN_SRC emacs-lisp
-  (recentf-mode 1)
-  (setq recentf-max-menu-items 25)
-  (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+  (use-package impatient-mode
+    :defer t
+    :config
+    (defun imp-markdown-filter (in)
+      (let ((out (current-buffer)))
+	(with-current-buffer in
+	  (markdown out))))
+    (push (cons 'markdown-mode #'imp-markdown-filter)
+	  imp-default-user-filters))
 #+END_SRC
+
+
 * Wind move and Frame move
 #+BEGIN_SRC emacs-lisp
   (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
 #+END_SRC
+
 * Treemacs
 If the evil mode is installed then there are some additional settings needs to be done.
 Refer the github page of the package.
@@ -256,15 +315,7 @@ Refer the github page of the package.
 	  ("C-c 1"      . treemacs-delete-other-windows)))
 #+END_SRC
 
-* Move text.
-Move the current line or region up or down using the M-Up and M-Down keys.
 
-#+BEGIN_SRC emacs-lisp
-  (use-package move-text
-    :ensure t
-    :init
-    (move-text-default-bindings))
-#+END_SRC
 
 * smex
 #+BEGIN_SRC emacs-lisp
@@ -282,22 +333,4 @@ Move the current line or region up or down using the M-Up and M-Down keys.
   (global-set-key (kbd "M-<down>") 'smart-down)
   (global-set-key (kbd "M-<left>") 'smart-backward)
   (global-set-key (kbd "M-<right>") 'smart-forward)
-#+END_SRC
-* Impatient mode
-#+BEGIN_SRC emacs-lisp
-  (use-package impatient-mode
-    :defer t
-    :config
-    (defun imp-markdown-filter (in)
-      (let ((out (current-buffer)))
-	(with-current-buffer in
-	  (markdown out))))
-    (push (cons 'markdown-mode #'imp-markdown-filter)
-	  imp-default-user-filters))
-#+END_SRC
-* Mode icons
-#+BEGIN_SRC emacs-lisp
-  (use-package mode-icons
-    :ensure t
-    :config (mode-icons-mode))
 #+END_SRC
